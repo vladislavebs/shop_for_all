@@ -4,7 +4,7 @@ from shop_for_all.constants.models import MAX_LENGTH
 from shop_for_all.helpers.models import BasicModel
 
 
-class Category(BasicModel, models.Model):
+class Category(BasicModel):
     name = models.CharField(max_length=MAX_LENGTH, unique=True)
     codename = models.SlugField(max_length=MAX_LENGTH, blank=True, unique=True)
 
@@ -12,7 +12,7 @@ class Category(BasicModel, models.Model):
         return self.name
 
 
-class Product(BasicModel, models.Model):
+class Product(BasicModel):
     name = models.CharField(max_length=MAX_LENGTH)
     codename = models.SlugField(max_length=MAX_LENGTH, blank=True, unique=True)
     price = models.FloatField(null=True, blank=True)

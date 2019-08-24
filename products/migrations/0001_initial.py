@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255, unique=True)),
                 ('codename', models.SlugField(max_length=255, unique=True)),
             ],
-            bases=(models.Model, shop_for_all.helpers.models.BasicModel),
+            bases=(shop_for_all.helpers.models.BasicModel,),
         ),
         migrations.CreateModel(
             name='Product',
@@ -33,6 +33,6 @@ class Migration(migrations.Migration):
                 ('date_created', models.DateTimeField(auto_now_add=True)),
                 ('category', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='products', to='products.Category')),
             ],
-            bases=(models.Model, shop_for_all.helpers.models.BasicModel),
+            bases=(shop_for_all.helpers.models.BasicModel,),
         ),
     ]

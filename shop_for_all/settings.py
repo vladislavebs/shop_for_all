@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     # apps
     "common.apps.CommonConfig",
     "products.apps.ProductsConfig",
+    "shops.apps.ShopsConfig",
     # Libraries
     "rest_framework",
     "rest_framework.authtoken",

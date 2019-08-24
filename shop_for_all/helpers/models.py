@@ -14,7 +14,7 @@ class DeleteStatusQuerySet(models.QuerySet):
 
 
 # noinspection PyAttributeOutsideInit,PyUnresolvedReferences
-class BasicModel:
+class BasicModel(models.Model):
     objects = DeleteStatusQuerySet.as_manager()
     delete_status = None
 
@@ -39,3 +39,6 @@ class BasicModel:
                 self.codename = f"{self.codename}_{int(time.time())}"
 
         super(BasicModel, self).save(*args, **kwargs)
+
+    class Meta:
+        abstract = True

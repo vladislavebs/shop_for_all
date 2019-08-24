@@ -7,7 +7,9 @@ from shop_for_all.constants.models import MAX_LENGTH
 from shop_for_all.helpers.django import format_foreign_key_limit, USER_MODEL
 from shop_for_all.helpers.models import BasicModel
 
-PRICE_MODELS = format_foreign_key_limit(("products", "product"))
+PRICE_MODELS = format_foreign_key_limit(
+    ("products", "product"), ("shops", "storecategory"), ("shops", "storeproduct")
+)
 WISHLIST_MODELS = format_foreign_key_limit(("products", "product"))
 
 
@@ -22,7 +24,7 @@ class PriceStatuses:
     STATUSES = ((ACTIVE, ACTIVE),)
 
 
-class Price(BasicModel, models.Model):
+class Price(BasicModel):
     price = models.FloatField()
     status = models.CharField(
         max_length=32, choices=PriceStatuses.STATUSES, default=PriceStatuses.ACTIVE
@@ -58,7 +60,7 @@ class PriceLog(models.Model):
 ############
 
 
-class WishList(BasicModel, models.Model):
+class WishList(BasicModel):
     name = models.CharField(max_length=MAX_LENGTH)
     codename = models.SlugField(max_length=MAX_LENGTH, blank=True, unique=True)
     user = models.ForeignKey(

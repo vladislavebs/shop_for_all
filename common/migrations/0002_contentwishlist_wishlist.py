@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('codename', models.SlugField(max_length=255)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='wishlists', to=settings.AUTH_USER_MODEL)),
             ],
-            bases=(shop_for_all.helpers.models.BasicModel, models.Model),
+            bases=(shop_for_all.helpers.models.BasicModel,),
         ),
         migrations.CreateModel(
             name='ContentWishList',

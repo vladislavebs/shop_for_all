@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('object_id', models.PositiveIntegerField()),
                 ('content_type', models.ForeignKey(limit_choices_to=models.Q(('app_label', 'products'), ('model', 'product')), on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType')),
             ],
-            bases=(shop_for_all.helpers.models.BasicModel, models.Model),
+            bases=(shop_for_all.helpers.models.BasicModel,),
         ),
         migrations.CreateModel(
             name='PriceLog',
