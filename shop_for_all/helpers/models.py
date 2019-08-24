@@ -13,7 +13,7 @@ class DeleteStatusQuerySet(models.QuerySet):
 
 
 # noinspection PyAttributeOutsideInit,PyUnresolvedReferences
-class BasicModel(models.Model):
+class BasicModel:
     objects = DeleteStatusQuerySet.as_manager()
     delete_status = None
 
