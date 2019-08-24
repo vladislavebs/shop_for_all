@@ -1,8 +1,12 @@
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericTabularInline
 
 from common import models
 
-admin.site.register(models.PriceLog)
+
+@admin.register(models.PriceLog)
+class PriceLogAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(models.Price)
@@ -17,10 +21,10 @@ class PriceAdmin(admin.ModelAdmin):
     get_content_object.admin_order_field = "content_object__name"
 
 
-class WishlistContent(admin.TabularInline):
+class WishListContent(GenericTabularInline):
     model = models.ContentWishList
 
 
 @admin.register(models.WishList)
 class WishlistAdmin(admin.ModelAdmin):
-    inlines = (WishlistContent,)
+    inlines = (WishListContent,)

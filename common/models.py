@@ -11,6 +11,11 @@ PRICE_MODELS = format_foreign_key_limit(("products", "product"))
 WISHLIST_MODELS = format_foreign_key_limit(("products", "product"))
 
 
+#########
+# Price #
+#########
+
+
 class PriceStatuses:
     ACTIVE = "active"
 
@@ -46,6 +51,11 @@ class PriceLog(models.Model):
     price = models.ForeignKey(
         to=Price, related_name="logs", on_delete=models.DO_NOTHING
     )
+
+
+############
+# WishList #
+############
 
 
 class WishList(BasicModel, models.Model):
