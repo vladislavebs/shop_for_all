@@ -1,4 +1,5 @@
 from django.db import models
+from slugify import slugify
 
 
 class DeleteStatusQuerySet(models.QuerySet):
@@ -34,7 +35,7 @@ class BasicModel:
                 separator="_",
             )
 
-            if Accounts.objects.filter(codename=self.codename).exists():
+            if self.__class__.objects.filter(codename=self.codename).exists():
                 self.codename = f"{self.codename}_{int(time.time())}"
 
         super(BasicModel, self).save(*args, **kwargs)

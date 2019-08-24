@@ -1,12 +1,10 @@
 from django.db import models
 
+from shop_for_all.constants.models import MAX_LENGTH
 from shop_for_all.helpers.models import BasicModel
 
 
-MAX_LENGTH = 255
-
-
-class Category(models.Model, BasicModel):
+class Category(BasicModel, models.Model):
     name = models.CharField(max_length=MAX_LENGTH, unique=True)
     codename = models.SlugField(max_length=MAX_LENGTH, blank=True, unique=True)
 
@@ -14,7 +12,7 @@ class Category(models.Model, BasicModel):
         return self.name
 
 
-class Product(models.Model, BasicModel):
+class Product(BasicModel, models.Model):
     name = models.CharField(max_length=MAX_LENGTH)
     codename = models.SlugField(max_length=MAX_LENGTH, blank=True, unique=True)
     price = models.FloatField(null=True, blank=True)
