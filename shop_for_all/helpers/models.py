@@ -13,7 +13,7 @@ class DeleteStatusQuerySet(models.QuerySet):
 
 
 # noinspection PyAttributeOutsideInit,PyUnresolvedReferences
-class BasicModel:
+class BasicModel(models.Model):
     objects = DeleteStatusQuerySet.as_manager()
     delete_status = None
 
@@ -23,3 +23,18 @@ class BasicModel:
 
         self.status = self.delete_status
         self.save()
+
+    def save(self, *args, **kwargs):
+        if hasattr(self, "codename") and not self.codename:
+            self.codename = slugify(
+                text=self.name,
+                max_length=250,
+                word_boundary=True,
+                save_order=True,
+                separator="_",
+            )
+
+            if Accounts.objects.filter(codename=self.codename).exists():
+                self.codename = f"{self.codename}_{int(time.time())}"
+
+        super(BasicModel, self).save(*args, **kwargs)
