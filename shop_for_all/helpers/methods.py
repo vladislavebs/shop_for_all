@@ -4,23 +4,67 @@ import subprocess
 import sys
 import time
 import typing
+from functools import reduce
 
 
 def get_index(_list: iter, index: int, default: any = None) -> any:
     return _list[index] if len(_list) > index else default
 
 
+GET_MAP = {
+    list: get_index,
+    dict: lambda _dict, field, default: _dict.get(field, default),
+    type: getattr,
+}
+
+
+def default_get_method(obj, field, default):
+    # noinspection PyBroadException
+    try:
+        return obj[field]
+    except Exception:
+        return default
+
+
+def get(obj, field, default=None):
+    method = GET_MAP.get(type(obj), default_get_method)
+    return method(obj, field, default)
+
+
+def get_item(iter_object: iter, path: str, default: any = None) -> any:
+    value = iter_object
+
+    for key in path.split("."):
+        value = get(value, key, default)
+
+        if value is default:
+            break
+
+    return value
+
+
 def unpack(
-    iterable: dict, *fields: typing.Iterable[str or typing.Iterable[str, str]]
+    iterable: iter,
+    *fields: typing.Iterable[str or typing.Iterable[str, str]],
+    default: any = None,
 ) -> typing.Iterable[typing.Tuple]:
-    return (
-        iterable.get(field[0], field[1])
-        if isinstance(field, tuple)
-        else iterable.get(field)
-        for field in fields
-        if not isinstance(field, tuple)
-        or (isinstance(field, tuple) and len(field) is 2)
-    )
+    def _unpack(unpacked: list, field: str):
+        unpack_default = default
+
+        if isinstance(field, tuple):
+            field, unpack_default, *_ = field
+
+        unpacked.append(
+            (
+                get_item(iterable, field, unpack_default)
+                if "." in field
+                else get(iterable, field, unpack_default)
+            )
+        )
+
+        return unpacked
+
+    return tuple(reduce(_unpack, fields, []))
 
 
 def timestamp():
@@ -32,6 +76,10 @@ def dict_if(cond, then, _else=None):
         _else = {}
 
     return then if cond else _else
+
+
+def hasattrs(obj: object, *attrs):
+    return all(hasattr(obj, attr) for attr in attrs)
 
 
 def get_location(executable):

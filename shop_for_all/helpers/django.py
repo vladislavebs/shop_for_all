@@ -23,19 +23,6 @@ def new_session(data, expiry=1800):
     return session
 
 
-def format_foreign_key_limit(*limits):
-    def _format_foreign_key_limit(foreign_limit, limit):
-        app, model = limit
-        q = models.Q(app_label=app, model=model)
-
-        if not foreign_limit:
-            return q
-
-        return foreign_limit | q
-
-    return reduce(_format_foreign_key_limit, limits, None)
-
-
 def get_temp(
     suffix: str = None, prefix: str = None, mode: str = "r+", encoding: str = "utf-8"
 ) -> typing.IO:
