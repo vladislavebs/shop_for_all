@@ -26,6 +26,7 @@ class Price(models_helpers.BasicModel, models_helpers.GenericModel):
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
 
+    generic_related_name = "price"
     generic_on_delete = models.CASCADE
     limit_models = (
         ("products", "product"),

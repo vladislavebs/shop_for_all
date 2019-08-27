@@ -12,7 +12,7 @@ class MultiSerializers:
     action: str = None
 
     def get_serializer_class(self):
-        return self.serializer_classes.get(self.action)
+        return self.serializer_classes.get(self.action, self.serializer_class)
 
 
 def action(*args, **kwargs):

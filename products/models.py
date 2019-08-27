@@ -1,5 +1,7 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
+from common.models import Price
 from shop_for_all.constants.models import MAX_LENGTH
 from shop_for_all.helpers.models import BasicModel
 
@@ -23,6 +25,8 @@ class Product(BasicModel):
     category = models.ForeignKey(
         to=Category, related_name="products", on_delete=models.DO_NOTHING
     )
+
+    prices = GenericRelation(to=Price)
 
     class Meta:
         verbose_name = "product"

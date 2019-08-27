@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 
 from shop_for_all.helpers import filters_backends
@@ -21,13 +21,28 @@ class StoresView(viewsets.ReadOnlyModelViewSet):
     ordering = "id"
 
 
-class UserStoreView(viewsets.GenericViewSet):
+class UserStoreView(viewsets.GenericViewSet, mixins.CreateModelMixin):
     pagination_class = None
     serializer_class = serializers.StoreSerializer
 
     @action(methods=["GET"], detail=False)
-    def store(self, request):
+    def details(self, request):
         store = models.Store.objects.get(user=request.user)
         serializer = serializers.StoreSerializer(store)
 
         return Response(serializer.data)
+
+    @action(
+        methods=["POST"],
+        detail=False,
+        serializer_class=serializers.StoreProductsSerializer,
+    )
+    def product(self, request):
+        store = models.Store.objects.get(user=request.user)
+        serializer = serializers.StoreProductsSerializer(
+            instance=store, data=request.data
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response()

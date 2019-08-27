@@ -28,6 +28,7 @@ def add_field(sender, *_, **__):
 
         models.ForeignKey(
             to=ContentType,
+            related_name=sender.generic_related_name,
             on_delete=sender.generic_on_delete,
             limit_choices_to=limit_models,
         ).contribute_to_class(sender, "content_type")
@@ -81,7 +82,7 @@ class GenericModel(models.Model):
     generic_to = None
     generic_on_delete = None
     limit_models = None
-    content_type = None
+    generic_related_name = None
 
     content_object = GenericForeignKey("content_type", "object_id")
 
