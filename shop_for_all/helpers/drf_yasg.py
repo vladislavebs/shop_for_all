@@ -50,13 +50,21 @@ _SchemaView: SchemaViewType = get_schema_view(
 
 class SchemaView(_SchemaView):
     renderer_classes = (
-        renderers.SwaggerJSONRenderer,
         renderers.SwaggerYAMLRenderer,
         renderers.OpenAPIRenderer,
         renderers.ReDocRenderer,
+        renderers.SwaggerJSONRenderer,
     )
 
+    @classmethod
+    def without_ui(cls, cache_timeout=0, cache_kwargs=None):
+        return cls.as_cached_view(
+            cache_timeout=cache_timeout,
+            cache_kwargs=cache_kwargs,
+            renderer_classes=cls.renderer_classes,
+        )
 
-cache_timeout = 0 if DEBUG else 3600
-docs_with_ui = SchemaView.with_ui(cache_timeout=cache_timeout)
-docs_without_ui = SchemaView.without_ui(cache_timeout=cache_timeout)
+
+timeout_cache = 0 if DEBUG else 3600
+docs_with_ui = SchemaView.with_ui(cache_timeout=timeout_cache)
+docs_without_ui = SchemaView.without_ui(cache_timeout=timeout_cache)

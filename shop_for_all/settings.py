@@ -114,7 +114,13 @@ REST_FRAMEWORK = {
 # DRF-YASG Config
 API_NAME = "Shop for All"
 API_VERSION = "v0.1"
-API_DESCRIPTION = "Shop for All API"
+API_DESCRIPTION = (
+    'Docs for "Shop for All" project.\n'
+    "\n"
+    "[Redoc OpenAPI](/docs_schema)\n"
+    "[OpenAPI schema json](/docs_schema?format=.json)\n"
+    "[OpenAPI schema yaml](/docs_schema?format=.yaml)\n"
+)
 
 SWAGGER_SETTINGS = {
     "DEFAULT_AUTO_SCHEMA_CLASS": f"{BASIC_APP}.helpers.inspectors.swagger_auto_schema.SwaggerAutoSchema",
