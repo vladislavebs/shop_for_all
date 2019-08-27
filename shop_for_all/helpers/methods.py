@@ -82,6 +82,14 @@ def hasattrs(obj: object, *attrs):
     return all(hasattr(obj, attr) for attr in attrs)
 
 
+def is_iterable(obj):
+    try:
+        iter(obj)
+        return True
+    except TypeError:
+        return False
+
+
 def get_location(executable):
     command = "where" if sys.platform == "win32" else "which"
 
