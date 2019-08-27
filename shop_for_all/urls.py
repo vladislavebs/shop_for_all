@@ -22,6 +22,7 @@ router.register(prefix="user/shop", viewset=shops_views.UserStoreView, basename=
 
 
 shops_router = router.register(**shop_endpoint, basename="shop")
+# TODO: Change to related
 shops_router.register(
     **product_endpoint, basename="shop-product", parents_query_lookups=["product_store"]
 )
