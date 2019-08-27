@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "common.apps.CommonConfig",
     "products.apps.ProductsConfig",
     "shops.apps.ShopsConfig",
+    "users.apps.UsersConfig",
     # Libraries
     "rest_framework",
     "rest_framework.authtoken",
@@ -109,6 +110,9 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": f"{BASIC_APP}.helpers.pagination.CustomPaginator",
     "PAGE_SIZE": 15,
 }
+
+# Rest Framework Extensions
+REST_FRAMEWORK_EXTENSIONS = {"DEFAULT_PARENT_LOOKUP_KWARG_NAME_PREFIX": "id_"}
 
 
 # DRF-YASG Config

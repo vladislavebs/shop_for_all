@@ -17,27 +17,27 @@ class Store(BasicModel):
         to=products_model.Category, through="StoreCategory", related_name="stores"
     )
     user = models.OneToOneField(
-        to=USER_MODEL, related_name="user", on_delete=models.CASCADE
+        to=USER_MODEL, related_name="store", on_delete=models.CASCADE
     )
 
 
 class StoreProduct(models.Model):
     store = models.ForeignKey(
-        to=Store, related_name="store_products", on_delete=models.CASCADE
+        to=Store, related_name="store_product", on_delete=models.CASCADE
     )
     product = models.ForeignKey(
         to=products_model.Product,
-        related_name="product_stores",
+        related_name="product_store",
         on_delete=models.CASCADE,
     )
 
 
 class StoreCategory(models.Model):
     store = models.ForeignKey(
-        to=Store, related_name="store_categories", on_delete=models.CASCADE
+        to=Store, related_name="store_category", on_delete=models.CASCADE
     )
     category = models.ForeignKey(
         to=products_model.Category,
-        related_name="category_stores",
+        related_name="category_store",
         on_delete=models.CASCADE,
     )

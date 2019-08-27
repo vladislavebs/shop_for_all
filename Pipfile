@@ -17,6 +17,7 @@ drf-yasg = "*"
 psycopg2-binary = "*"
 python-slugify = "*"
 packaging = "*"
+drf-extensions = "*"
 
 [dev-packages]
 pylint = "*"

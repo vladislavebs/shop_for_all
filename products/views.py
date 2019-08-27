@@ -1,10 +1,13 @@
 from rest_framework import viewsets
+from rest_framework_extensions import mixins as extensions_mixins
 
 from products import models, serializers
 from shop_for_all.helpers import filters_backends
 
 
-class CategoriesView(viewsets.ReadOnlyModelViewSet):
+class CategoriesView(
+    extensions_mixins.NestedViewSetMixin, viewsets.ReadOnlyModelViewSet
+):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
 
@@ -19,7 +22,7 @@ class CategoriesView(viewsets.ReadOnlyModelViewSet):
     ordering = "id"
 
 
-class ProductsView(viewsets.ReadOnlyModelViewSet):
+class ProductsView(extensions_mixins.NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
 
