@@ -17,8 +17,11 @@ shop_endpoint = dict(prefix="shops", viewset=shops_views.StoresView)
 router = Router(trailing_slash=False)
 router.register(**category_endpoint, basename="category")
 router.register(**product_endpoint, basename="product")
-router.register(prefix="users", viewset=users_views.UserView, basename="user")
-router.register(prefix="user/shop", viewset=shops_views.UserStoreView, basename="user_shop")
+router.register(prefix="user", viewset=users_views.UserView, basename="user_details")
+router.register(prefix="users", viewset=users_views.UsersView, basename="user")
+router.register(
+    prefix="user/shop", viewset=shops_views.UserStoreView, basename="user_shop"
+)
 
 
 shops_router = router.register(**shop_endpoint, basename="shop")

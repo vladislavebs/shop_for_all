@@ -1,9 +1,8 @@
 from rest_framework import serializers
 
-from shops import models
-from products import models as products_models
-from users import serializers as users_serializers
 from common import serializers as common_serializers
+from products import models as products_models
+from shops import models
 
 
 class StoreProductSerializer(serializers.ModelSerializer):
@@ -18,9 +17,7 @@ class StoreCategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class StoreSerializer(serializers.ModelSerializer):
-    user = users_serializers.UserSerializer(read_only=True)
-
+class StoreBasicSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         store, created = models.Store.objects.update_or_create(
             user=self.context["request"].user, defaults=validated_data
@@ -30,11 +27,19 @@ class StoreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Store
-        exclude = ("categories", "products", "codename")
+        basic_exclude = ("categories", "products", "codename")
+        exclude = (*basic_exclude, "user")
         extra_kwargs = {
             "date_created": {"read_only": True},
             "user": {"read_only": True},
         }
+
+
+class StoreSerializer(StoreBasicSerializer):
+    user = common_serializers.UserBasicSerializer(read_only=True)
+
+    class Meta(StoreBasicSerializer.Meta):
+        exclude = StoreBasicSerializer.Meta.basic_exclude
 
 
 # noinspection PyAbstractClass

@@ -1,21 +1,9 @@
-from rest_framework import serializers
+from common.serializers import UserBasicSerializer
+from shops.serializers import StoreBasicSerializer
 
-from shop_for_all.helpers.django import USER_MODEL
 
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = USER_MODEL
-        exclude = (
-            "last_login",
-            "password",
-            "is_superuser",
-            "is_staff",
-            "is_active",
-            "date_joined",
-            "groups",
-            "user_permissions",
-        )
+class UserSerializer(UserBasicSerializer):
+    store = StoreBasicSerializer(read_only=True)
 
 
 class UserDetailSerializer(UserSerializer):
