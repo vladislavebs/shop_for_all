@@ -35,14 +35,12 @@ class UserStoreView(viewsets.GenericViewSet, mixins.CreateModelMixin):
     @action(
         methods=["POST"],
         detail=False,
-        serializer_class=serializers.StoreProductsSerializer,
+        serializer_class=serializers.UserStoreProductSerializer,
     )
     def product(self, request):
         store = models.Store.objects.get(user=request.user)
-        serializer = serializers.StoreProductsSerializer(
-            instance=store, data=request.data
-        )
+        serializer = self.get_serializer(instance=store, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response()
+        return Response(serializer.data)

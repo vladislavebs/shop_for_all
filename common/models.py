@@ -1,5 +1,7 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils import timezone
 from rest_framework.fields import JSONField
 
 from shop_for_all.constants.models import MAX_LENGTH
@@ -23,7 +25,7 @@ class Price(models_helpers.BasicModel, models_helpers.GenericModel):
     status = models.CharField(
         max_length=32, choices=PriceStatuses.STATUSES, default=PriceStatuses.ACTIVE
     )
-    start_date = models.DateTimeField(null=True, blank=True)
+    start_date = models.DateTimeField(blank=True, default=timezone.now)
     end_date = models.DateTimeField(null=True, blank=True)
 
     generic_related_name = "price"
@@ -82,3 +84,10 @@ class ContentWishList(models_helpers.GenericModel):
     class Meta:
         verbose_name = "content wishlist"
         verbose_name_plural = "contents wishlists"
+
+
+#############
+# Relations #
+#############
+
+PRICES_RELATION = GenericRelation(to=Price)

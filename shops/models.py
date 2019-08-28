@@ -1,5 +1,6 @@
 from django.db import models
 
+from common.models import PRICES_RELATION, Price
 from products import models as products_model
 from shop_for_all.constants.models import MAX_LENGTH
 from shop_for_all.helpers.django import USER_MODEL
@@ -20,6 +21,31 @@ class Store(BasicModel):
         to=USER_MODEL, related_name="store", on_delete=models.CASCADE
     )
 
+    def add_product(
+        self, product: products_model.Product, basic_price: int, prices=None
+    ):
+        store_product, created = StoreProduct.objects.get_or_create(
+            store=self, product=product
+        )
+
+        if created:
+            product_prices = [
+                Price(price=basic_price, content_object=store_product),
+                *[
+                    Price(
+                        price=price["price"],
+                        start_date=price.get("start_date"),
+                        end_date=price.get("end_date"),
+                        content_object=store_product,
+                    )
+                    for price in prices or []
+                ],
+            ]
+
+            Price.objects.bulk_create(product_prices)
+
+        return store_product
+
 
 class StoreProduct(models.Model):
     store = models.ForeignKey(
@@ -31,6 +57,15 @@ class StoreProduct(models.Model):
         on_delete=models.CASCADE,
     )
 
+    prices = PRICES_RELATION
+
+    class Meta:
+        unique_together = ("store", "product")
+
+    @property
+    def price(self):
+        return 0
+
 
 class StoreCategory(models.Model):
     store = models.ForeignKey(
@@ -41,3 +76,5 @@ class StoreCategory(models.Model):
         related_name="category_store",
         on_delete=models.CASCADE,
     )
+
+    prices = PRICES_RELATION
